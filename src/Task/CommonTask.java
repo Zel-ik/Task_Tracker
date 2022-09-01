@@ -7,4 +7,13 @@ public class CommonTask extends Task {
         setStatus(Status.NEW);
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }
