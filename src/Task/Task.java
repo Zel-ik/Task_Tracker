@@ -3,6 +3,13 @@ package Task;
 import java.util.Objects;
 
 public abstract class Task {
+    /*
+    Я просто решил что абстрактный класс подойдет лучше, так как у всех трех классов почти все сходится помимо, того что
+    у Эпика есть список под задач. А если в будущем придется изменить Обычный Таск то это будет сделать проще.
+    */
+
+
+
     private String name;
     private String describe;
     private int id;
