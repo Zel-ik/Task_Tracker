@@ -20,6 +20,9 @@ public class TaskManager {
 
     public List<Task> returnEpicTaskList() {
         List<Task> allEpicTask = new ArrayList<>(epicTasks.values());
+        for (EpicTask epicTask : epicTasks.values()) {
+            statusManager(epicTask);
+        }
         return allEpicTask;
     }
 
@@ -38,10 +41,10 @@ public class TaskManager {
     }
 
     public void removeSubtaskList() {
-        subtasks.clear();
-        for (int i = 0; i < subtasks.size(); i++) {
-            subtasks.get(i).getEpicTask().getSubtasks().clear();
+        for (Subtask s : subtasks.values()) {
+            s.getEpicTask().getSubtasks().clear();
         }
+        subtasks.clear();
     }
 
 
@@ -134,15 +137,12 @@ public class TaskManager {
                 doneStatusCounter++;
             }
         }
-        if (newStatusCounter == epicTask.getSubtasks().size()) {
+        if (newStatusCounter == epicTask.getSubtasks().size() || epicTask.getSubtasks().size() == 0) {
             epicTask.setStatus(Status.NEW);
-            System.out.println("Дошли сюда? 1");
-        } else if (doneStatusCounter == epicTask.getSubtasks().size()) {
+        } else if (doneStatusCounter != 0 && doneStatusCounter == epicTask.getSubtasks().size()) {
             epicTask.setStatus(Status.DONE);
-            System.out.println("Дошли сюда? 2");
         } else {
             epicTask.setStatus(Status.IN_PROGRESS);
-            System.out.println("Дошли сюда? 3");
         }
     }
 }
