@@ -2,147 +2,43 @@ package Manager;
 
 import Task.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class TaskManager {
-    int idCounter = 0;
+public interface TaskManager<T extends Task> {
 
-    HashMap<Integer, Task> commonTasks = new HashMap<>();
-    HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
-    HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    List<T> getHistory();
 
-    public List<Task> returnCommonTaskList() {
-        List<Task> allCommonTask = new ArrayList<>(commonTasks.values());
-        return allCommonTask;
-    }
+    List<Task> returnCommonTaskList();
 
-    public List<Task> returnEpicTaskList() {
-        List<Task> allEpicTask = new ArrayList<>(epicTasks.values());
-        for (EpicTask epicTask : epicTasks.values()) {
-            statusManager(epicTask);
-        }
-        return allEpicTask;
-    }
+    List<Task> returnEpicTaskList();
 
-    public List<Task> returnSubtaskList() {
-        List<Task> allSubTask = new ArrayList<>(subtasks.values());
-        return allSubTask;
-    }
+    List<Task> returnSubtaskList();
 
-    public void removeCommonTaskList() {
-        commonTasks.clear();
-    }
+    void removeCommonTaskList();
 
-    public void removeEpicTaskList() {
-        epicTasks.clear();
-        subtasks.clear();
-    }
+    void removeEpicTaskList();
 
-    public void removeSubtaskList() {
-        for (Subtask s : subtasks.values()) {
-            s.getEpicTask().getSubtasks().clear();
-        }
-        subtasks.clear();
-    }
+    void removeSubtaskList();
+
+    T findEpic(int id);
+
+    T findCommonTask(int id);
+
+    T findSubtask(int id);
+
+    void createSubtask(Subtask task);
+
+    void createEpicTask(EpicTask task);
+
+    void createCommonTask(CommonTask task);
+
+    void updateEpicTask(EpicTask epicTask, int id);
+
+    void updateSubtask(Subtask subtask, int id);
+
+    void updateCommonTask(CommonTask task, int id);
+
+    void deleteTaskForId(int id);
 
 
-    public Task findEpic(int id) {
-        if (epicTasks.containsKey(id)) return epicTasks.get(id);
-        return null;
-    }
-
-    public Task findCommonTask(int id) {
-        if (commonTasks.containsKey(id)) return commonTasks.get(id);
-        return null;
-    }
-
-    public Task findSubtask(int id) {
-        if (subtasks.containsKey(id)) return subtasks.get(id);
-        return null;
-    }
-
-
-    public void createSubtask(Subtask task) {
-        task.setId(idCounter);
-        subtasks.put(idCounter, (Subtask) task);
-        idCounter++;
-
-    }
-
-    public void createEpicTask(EpicTask task) {
-        task.setId(idCounter);
-        epicTasks.put(idCounter, task);
-        idCounter++;
-    }
-
-    public void createCommonTask(CommonTask task) {
-        task.setId(idCounter);
-        commonTasks.put(idCounter, task);
-        idCounter++;
-    }
-
-    public void updateEpicTask(EpicTask epicTask, int id) {
-        if (epicTasks.containsKey(id)) {
-            for (Subtask s : epicTasks.get(id).getSubtasks()) {
-                epicTask.setSubtasks(s);
-                s.setEpicTask(epicTask);
-            }
-            epicTask.setId(id);
-            epicTasks.put(id, epicTask);
-            statusManager(epicTask);
-        }
-    }
-
-    public void updateSubtask(Subtask subtask, int id) {
-        if (subtasks.containsKey(id)) {
-            subtask.setEpicTask(subtasks.get(id).getEpicTask());
-            subtask.setId(id);
-            subtasks.put(id, subtask);
-            statusManager(subtask.getEpicTask());
-        }
-    }
-
-    public void updateCommonTask(CommonTask task, int id) {
-        if (commonTasks.containsKey(id)) {
-            task.setId(id);
-            commonTasks.put(id, task);
-        }
-    }
-
-    public void deleteTaskForId(int id) {
-        if (epicTasks.containsKey(id)) epicTasks.remove(id);
-        if (subtasks.containsKey(id)) {
-            subtasks.remove(id);
-            statusManager(((Subtask) findSubtask(id)).getEpicTask());
-        }
-        if (commonTasks.containsKey(id)) commonTasks.remove(id);
-    }
-
-    public ArrayList<Subtask> subtasksList(EpicTask epicTask) {
-        return epicTask.getSubtasks();
-
-    }
-
-    public void statusManager(EpicTask epicTask) {
-        int doneStatusCounter = 0;
-        int newStatusCounter = 0;
-
-        for (int i = 0; i < epicTask.getSubtasks().size(); i++) {
-            if (epicTask.getSubtasks().get(i).getStatus().equals(Status.NEW)) {
-                newStatusCounter++;
-            }
-            if (epicTask.getSubtasks().get(i).getStatus().equals(Status.DONE)) {
-                doneStatusCounter++;
-            }
-        }
-        if (newStatusCounter == epicTask.getSubtasks().size() || epicTask.getSubtasks().size() == 0) {
-            epicTask.setStatus(Status.NEW);
-        } else if (doneStatusCounter != 0 && doneStatusCounter == epicTask.getSubtasks().size()) {
-            epicTask.setStatus(Status.DONE);
-        } else {
-            epicTask.setStatus(Status.IN_PROGRESS);
-        }
-    }
 }

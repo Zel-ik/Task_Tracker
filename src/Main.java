@@ -1,9 +1,11 @@
+import Manager.InMemoryTaskManager;
+import Manager.Managers;
 import Manager.TaskManager;
 import Task.*;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
         EpicTask move = new EpicTask("Переезд", "найтии квартиру, собрать вещи и переехать");
         EpicTask moveInAnotherCountry = new EpicTask("Переезд за рубеж", "нужно купить билет, собрать вещи и улететь");
@@ -22,8 +24,21 @@ public class Main {
 
         taskManager.updateEpicTask(moveInAnotherCountry, move.getId());
 
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findSubtask(2);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findEpic(0);
+        taskManager.findSubtask(2);
+
         System.out.println(taskManager.returnEpicTaskList());
         System.out.println(taskManager.returnSubtaskList());
+        System.out.println(taskManager.getHistory());
 
     }
 
