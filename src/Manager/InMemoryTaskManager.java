@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements  TaskManager{
+    HistoryManager historyManager = Managers.getDefaultHistory();
     int idCounter = 0;
 
     HashMap<Integer, Task> commonTasks = new HashMap<>();
     HashMap<Integer, EpicTask> epicTasks = new HashMap<>();
     HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private List<Task> historyList = new ArrayList<>();
 
     @Override
     public List<Task> getHistory() {
-        return historyList;
+        return historyManager.getHistory();
     }
 
     @Override
@@ -61,12 +61,12 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findEpic(int id) {
         if (epicTasks.containsKey(id)) {
-            if(historyList.size() > 9){
-                historyList.remove(0);
-                historyList.add(epicTasks.get(id));
+            if(historyManager.getHistory().size() > 9){
+                historyManager.getHistory().remove(0);
+                historyManager.getHistory().add(epicTasks.get(id));
                 return epicTasks.get(id);
             }
-            historyList.add(epicTasks.get(id));
+            historyManager.getHistory().add(epicTasks.get(id));
             return epicTasks.get(id);
         }
         return null;
@@ -75,12 +75,12 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findCommonTask(int id) {
         if (commonTasks.containsKey(id)) {
-            if(historyList.size() > 9){
-                historyList.remove(0);
-                historyList.add(commonTasks.get(id));
+            if(historyManager.getHistory().size() > 9){
+                historyManager.getHistory().remove(0);
+                historyManager.getHistory().add(commonTasks.get(id));
                 return commonTasks.get(id);
             }
-            historyList.add(commonTasks.get(id));
+            historyManager.getHistory().add(commonTasks.get(id));
             return commonTasks.get(id);
         }
         return null;
@@ -89,12 +89,12 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findSubtask(int id) {
         if (subtasks.containsKey(id)) {
-            if(historyList.size() > 9){
-                historyList.remove(0);
-                historyList.add(subtasks.get(id));
+            if(historyManager.getHistory().size() > 9){
+                historyManager.getHistory().remove(0);
+                historyManager.getHistory().add(subtasks.get(id));
                 return subtasks.get(id);
             }
-            historyList.add(subtasks.get(id));
+            historyManager.getHistory().add(subtasks.get(id));
             return subtasks.get(id);
         }
         return null;
