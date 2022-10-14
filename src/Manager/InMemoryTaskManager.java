@@ -62,11 +62,11 @@ public class InMemoryTaskManager implements  TaskManager{
     public Task findEpic(int id) {
         if (epicTasks.containsKey(id)) {
             if(historyManager.getHistory().size() > 9){
-                historyManager.getHistory().remove(0);
-                historyManager.getHistory().add(epicTasks.get(id));
+                historyManager.remove(0);
+                historyManager.add(epicTasks.get(id));
                 return epicTasks.get(id);
             }
-            historyManager.getHistory().add(epicTasks.get(id));
+            historyManager.add(epicTasks.get(id));
             return epicTasks.get(id);
         }
         return null;
@@ -76,11 +76,11 @@ public class InMemoryTaskManager implements  TaskManager{
     public Task findCommonTask(int id) {
         if (commonTasks.containsKey(id)) {
             if(historyManager.getHistory().size() > 9){
-                historyManager.getHistory().remove(0);
-                historyManager.getHistory().add(commonTasks.get(id));
+                historyManager.remove(0);
+                historyManager.add(commonTasks.get(id));
                 return commonTasks.get(id);
             }
-            historyManager.getHistory().add(commonTasks.get(id));
+            historyManager.add(commonTasks.get(id));
             return commonTasks.get(id);
         }
         return null;
@@ -90,11 +90,11 @@ public class InMemoryTaskManager implements  TaskManager{
     public Task findSubtask(int id) {
         if (subtasks.containsKey(id)) {
             if(historyManager.getHistory().size() > 9){
-                historyManager.getHistory().remove(0);
-                historyManager.getHistory().add(subtasks.get(id));
+                historyManager.remove(0);
+                historyManager.add(subtasks.get(id));
                 return subtasks.get(id);
             }
-            historyManager.getHistory().add(subtasks.get(id));
+            historyManager.add(subtasks.get(id));
             return subtasks.get(id);
         }
         return null;
@@ -156,12 +156,35 @@ public class InMemoryTaskManager implements  TaskManager{
 
     @Override
     public void deleteTaskForId(int id) {
-        if (epicTasks.containsKey(id)) epicTasks.remove(id);
-        if (subtasks.containsKey(id)) {
-            subtasks.remove(id);
-            statusManager(((Subtask) findSubtask(id)).getEpicTask());
+        /*
+        данный метод проверяет наличие таска в списке соответствующему типу таска (эпик в списке Эпиков и т.д.),
+         затем проверяет наличие этого таска в истории запросов и удаляет оттуда, затем удаляет таск из его списка.
+        */
+
+        if (epicTasks.containsKey(id)) {
+            if (historyManager.getHistory().contains(epicTasks.get(id))) {
+                historyManager.remove(epicTasks.get(id).getId());
+            }
+            if(subtasksList(epicTasks.get(id)).size() != 0){
+                for(int i =0; i < subtasksList(epicTasks.get(id)).size(); i++){
+                    deleteTaskForId(subtasksList(epicTasks.get(id)).get(i).getId());
+                }
+            }
+            epicTasks.remove(id);
         }
-        if (commonTasks.containsKey(id)) commonTasks.remove(id);
+        if (subtasks.containsKey(id)) {
+            if (historyManager.getHistory().contains(subtasks.get(id))) {
+                historyManager.remove(subtasks.get(id).getId());
+            }
+            subtasks.remove(id);
+//            statusManager(((Subtask) findSubtask(id)).getEpicTask());
+        }
+        if (commonTasks.containsKey(id)) {
+            if (historyManager.getHistory().contains(commonTasks.get(id))) {
+                historyManager.remove(commonTasks.get(id).getId());
+            }
+            commonTasks.remove(id);
+        }
     }
 
     public ArrayList<Subtask> subtasksList(EpicTask epicTask) {
