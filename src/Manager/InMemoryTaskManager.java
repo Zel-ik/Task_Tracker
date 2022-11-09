@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InMemoryTaskManager implements  TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
     int idCounter = 0;
 
@@ -61,7 +61,7 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findEpic(int id) {
         if (epicTasks.containsKey(id)) {
-            if(historyManager.getHistory().size() > 9){
+            if (historyManager.getHistory().size() > 9) {
                 historyManager.remove(0);
                 historyManager.add(epicTasks.get(id));
                 return epicTasks.get(id);
@@ -75,7 +75,7 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findCommonTask(int id) {
         if (commonTasks.containsKey(id)) {
-            if(historyManager.getHistory().size() > 9){
+            if (historyManager.getHistory().size() > 9) {
                 historyManager.remove(0);
                 historyManager.add(commonTasks.get(id));
                 return commonTasks.get(id);
@@ -89,7 +89,7 @@ public class InMemoryTaskManager implements  TaskManager{
     @Override
     public Task findSubtask(int id) {
         if (subtasks.containsKey(id)) {
-            if(historyManager.getHistory().size() > 9){
+            if (historyManager.getHistory().size() > 9) {
                 historyManager.remove(0);
                 historyManager.add(subtasks.get(id));
                 return subtasks.get(id);
@@ -165,8 +165,8 @@ public class InMemoryTaskManager implements  TaskManager{
             if (historyManager.getHistory().contains(epicTasks.get(id))) {
                 historyManager.remove(epicTasks.get(id).getId());
             }
-            if(subtasksList(epicTasks.get(id)).size() != 0){
-                for(int i =0; i < subtasksList(epicTasks.get(id)).size(); i++){
+            if (subtasksList(epicTasks.get(id)).size() != 0) {
+                for (int i = 0; i < subtasksList(epicTasks.get(id)).size(); i++) {
                     deleteTaskForId(subtasksList(epicTasks.get(id)).get(i).getId());
                 }
             }

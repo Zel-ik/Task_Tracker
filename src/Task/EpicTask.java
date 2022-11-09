@@ -3,13 +3,22 @@ package Task;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static Manager.TaskType.EPIC_TASK;
+
 public class EpicTask extends Task {
+
+    private int id;
 
     private ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public EpicTask(String name, String describe) {
         super(name, describe);
         setStatus(Status.NEW);
+    }
+    public EpicTask(int id, Status status, String name, String describe) {
+        super(name, describe);
+        setId(id);
+        setStatus(status);
     }
 
     public void setSubtasks(Subtask subtasks) {
@@ -18,6 +27,22 @@ public class EpicTask extends Task {
 
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + ", " + EPIC_TASK.name() + ", " + getName() + ", " + getStatus() + ", "
+                + getDescribe();
     }
 
     @Override
