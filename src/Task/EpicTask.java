@@ -15,11 +15,6 @@ public class EpicTask extends Task {
         super(name, describe);
         setStatus(Status.NEW);
     }
-    public EpicTask(int id, Status status, String name, String describe) {
-        super(name, describe);
-        setId(id);
-        setStatus(status);
-    }
 
     public void setSubtasks(Subtask subtasks) {
         this.getSubtasks().add(subtasks);
