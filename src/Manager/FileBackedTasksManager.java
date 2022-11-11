@@ -48,7 +48,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    static FileBackedTasksManager loadFromFile(File file) {
+     FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager newFileBackedTasksManager = new FileBackedTasksManager(file.toString());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             reader.readLine();
@@ -64,11 +64,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     continue;
                 }
                 Task task;
-                task = newFileBackedTasksManager.fromString(buffer);
+                task = fromString(buffer);
                 if (task instanceof EpicTask) newFileBackedTasksManager.epicTasks.put(task.getId(), (EpicTask) task);
                 if (task instanceof Subtask) newFileBackedTasksManager.subtasks.put(task.getId(), (Subtask) task);
-                if (task instanceof CommonTask)
-                    newFileBackedTasksManager.commonTasks.put(task.getId(), (CommonTask) task);
+                if (task instanceof CommonTask) commonTasks.put(task.getId(), (CommonTask) task);
 
             }
 
@@ -112,11 +111,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return x.toString();
     }
 
-    static List<Integer> historyFromString(String value) {
+     List<Integer> historyFromString(String value) {
         List<Integer> id = new ArrayList<>();
         String[] sline = value.split(",");
         for (int i = 0; i < sline.length; i++) {
-            id.add(Integer.parseInt(sline[i]));
+            if(sline[i] != null) {
+                id.add(Integer.parseInt(sline[i]));
+            }
         }
         return id;
     }
@@ -218,13 +219,32 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-
-
         FileBackedTasksManager fileBackedTaskManager = new FileBackedTasksManager(".idea/Saver.csv");
-        TaskManager taskManager = FileBackedTasksManager.loadFromFile(fileBackedTaskManager.file);
+        EpicTask move = new EpicTask("Переезд", "найтии квартиру, собрать вещи и переехать");
+        EpicTask problems = new EpicTask("Решаем проблемы", "Найти тупые ошибки в моем тупом коде");
 
-        System.out.println(taskManager.returnSubtaskList());
+        Subtask subtask1 = new Subtask("Сбор", "Собираем вещи", move);
+        Subtask subtask2 = new Subtask("отвезти вещи", "Везем вещи в новую квартиру", move);
+        Subtask subtask3 = new Subtask("Разобрать вещи", "разбираем ящики и сумки",  move);
+
+        fileBackedTaskManager.createEpicTask(move);
+        fileBackedTaskManager.createEpicTask(problems);
+
+        fileBackedTaskManager.findEpic(1);
+        fileBackedTaskManager.findEpic(0);
+        fileBackedTaskManager.findSubtask(3);
+
+        fileBackedTaskManager.createSubtask(subtask1);
+        fileBackedTaskManager.createSubtask(subtask2);
+        fileBackedTaskManager.createSubtask(subtask3);
+
+        TaskManager taskManager = fileBackedTaskManager.loadFromFile(fileBackedTaskManager.file);
         System.out.println(taskManager.returnEpicTaskList());
+        System.out.println(taskManager.returnSubtaskList());
+
+
+
+
     }
 
 }

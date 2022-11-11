@@ -1,9 +1,11 @@
-package Manager;
+package LinckedList;
+
+import LinckedList.Node;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class CustomLinkedList<T>{
+public class CustomLinkedList<T>{
 
     private int size =0;
 
