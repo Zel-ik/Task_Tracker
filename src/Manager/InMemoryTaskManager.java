@@ -1,6 +1,8 @@
 package Manager;
 
 import Task.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,8 +53,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeSubtaskList() {
+
         for (Subtask s : subtasks.values()) {
-            s.getEpicTask().getSubtasks().clear();
+            if(s.getEpicTask() != null) {
+                s.getEpicTask().getSubtasks().clear();
+            }
+
+
         }
         subtasks.clear();
     }
@@ -142,7 +149,9 @@ public class InMemoryTaskManager implements TaskManager {
             subtask.setEpicTask(subtasks.get(id).getEpicTask());
             subtask.setId(id);
             subtasks.put(id, subtask);
-            statusManager(subtask.getEpicTask());
+            if(subtask.getEpicTask() != null) {
+                statusManager(subtask.getEpicTask());
+            }
         }
     }
 
@@ -176,8 +185,9 @@ public class InMemoryTaskManager implements TaskManager {
             if (historyManager.getHistory().contains(subtasks.get(id))) {
                 historyManager.remove(subtasks.get(id).getId());
             }
+            EpicTask epicTask1 = ((Subtask) findSubtask(id)).getEpicTask();
             subtasks.remove(id);
-//            statusManager(((Subtask) findSubtask(id)).getEpicTask());
+            statusManager(epicTask1);
         }
         if (commonTasks.containsKey(id)) {
             if (historyManager.getHistory().contains(commonTasks.get(id))) {
@@ -208,8 +218,106 @@ public class InMemoryTaskManager implements TaskManager {
             epicTask.setStatus(Status.NEW);
         } else if (doneStatusCounter != 0 && doneStatusCounter == epicTask.getSubtasks().size()) {
             epicTask.setStatus(Status.DONE);
+            epicTask.setEndTime(epicTask.getSubtasks().get(epicTask.getSubtasks().size()-1).getEndTime());
+            epicTask.setDuration(epicTask.getStartTime(),
+                    epicTask.getSubtasks().get(epicTask.getSubtasks().size()-1).getEndTime());
         } else {
             epicTask.setStatus(Status.IN_PROGRESS);
         }
+    }
+
+    @Test
+    void statusEmptyTest() {
+        EpicTask epicTask = new EpicTask("Тест", "Тестовый");
+        Assertions.assertFalse(epicTask.getSubtasks().size() > 0);
+    }
+
+    @Test
+    void allOfSubtasksHaveNewStatusTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest2.setStatus(Status.DONE);
+//        statusManager(epicTaskTest);
+//        int correct = 0;
+//        if (epicTaskTest.getStatus() == Status.NEW) {
+//            correct = 1;
+//        }
+//        Assertions.assertEquals(1,correct);
+//        Тут проверка на New epicTaskTest, если вдруг я неправильно понял задание, этот тест тоже работает
+
+        int newStatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.NEW) {
+                newStatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(1, newStatusCounter);
+    }
+
+    @Test
+    void allOfSubtasksHaveDoneStatusTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest2.setStatus(Status.DONE);
+        subtaskTest.setStatus(Status.DONE);
+        statusManager(epicTaskTest);
+
+        int correct = 0;
+        if (epicTaskTest.getStatus() == Status.DONE) {
+            correct = 1;
+        }
+        Assertions.assertEquals(1, correct);
+
+//        int newStatusCounter = 0;
+//        for(Subtask s : epicTaskTest.getSubtasks()){
+//            if(s.getStatus() != Status.DONE){
+//                newStatusCounter +=1;
+//            }
+//        }
+//        
+//        Assertions.assertEquals(0,newStatusCounter);
+    }
+
+    @Test
+    void statusNewAndDoneTogetherTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        Subtask subtaskTest3 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest2.setStatus(Status.DONE);
+        subtaskTest2.setStatus(Status.IN_PROGRESS);
+        statusManager(epicTaskTest);
+
+        int StatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.NEW) {
+                StatusCounter += 1;
+            } else if (s.getStatus() == Status.DONE) {
+                StatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(2, StatusCounter);
+    }
+
+    @Test
+    void statusInProgressTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        Subtask subtaskTest3 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest.setStatus(Status.IN_PROGRESS);
+        subtaskTest2.setStatus(Status.IN_PROGRESS);
+        subtaskTest3.setStatus(Status.IN_PROGRESS);
+        statusManager(epicTaskTest);
+
+        int StatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.IN_PROGRESS) {
+                StatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(3, StatusCounter);
     }
 }

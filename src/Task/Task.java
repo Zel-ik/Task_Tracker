@@ -1,5 +1,6 @@
 package Task;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class Task {
@@ -14,11 +15,26 @@ public abstract class Task {
     private String describe;
     private int id;
     private Status status;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private int duration;
 
     public Task(String name, String describe) {
         this.name = name;
         this.describe = describe;
 
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public Status getStatus() {
