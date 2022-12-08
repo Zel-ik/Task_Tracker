@@ -1,5 +1,6 @@
-package Manager;
+package Test;
 
+import Manager.TaskManager;
 import Task.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -50,8 +51,9 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void returnSubtaskListTest(){
-        Subtask subtask = new Subtask("subtask", "subtask disc");
-        Subtask subtask2 = new Subtask("subtask2", "subtask disc2");
+        EpicTask epicTask = new EpicTask("epicT", "epic disc");
+        Subtask subtask = new Subtask("subtask", "subtask disc",epicTask, "22-04-2022 15:41", 51);
+        Subtask subtask2 = new Subtask("subtask2", "subtask disc2",epicTask, "22-04-2022 15:41", 51);
 
         Assertions.assertEquals(0,manager.returnSubtaskList().size());
 
@@ -81,7 +83,8 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void removeSubtaskListTest(){
-        Subtask subtask = new Subtask("sub", "sub man");
+        EpicTask epicTask = new EpicTask("e", "e");
+        Subtask subtask = new Subtask("sub", "sub man", epicTask, "21-04-2022 15:55", 14);
         manager.createSubtask(subtask);
         manager.removeSubtaskList();
 
@@ -108,7 +111,8 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void findSubtaskIdTest(){
-        Subtask subtask = new Subtask("s", "s");
+        EpicTask epicTask = new EpicTask("e", "e");
+        Subtask subtask = new Subtask("s", "s", epicTask, "20-12-2022 15:55", 531);
         manager.createSubtask(subtask);
 
         Assertions.assertNotNull(manager.findSubtask(0));
@@ -125,7 +129,8 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void createSubtaskTest(){
-        Subtask subtask = new Subtask("name", "des");
+        EpicTask epicTask = new EpicTask("t", "e");
+        Subtask subtask = new Subtask("name", "des", epicTask, "22-04-2022 15:55", 16);
         manager.createSubtask(subtask);
 
         Assertions.assertNotNull(manager.findSubtask(0));
@@ -152,8 +157,9 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void updateSubtaskTest(){
-        Subtask subtask = new Subtask("name", "des");
-        Subtask subtask2 = new Subtask("noName", "noDes");
+        EpicTask epicTask = new EpicTask("name", "des");
+        Subtask subtask = new Subtask("name", "des", epicTask, "22-04-2022 15:16", 16);
+        Subtask subtask2 = new Subtask("noName", "noDes",epicTask, "22-04-2022 15:32", 40);
 
         manager.createSubtask(subtask);
         manager.updateSubtask(subtask2,0);

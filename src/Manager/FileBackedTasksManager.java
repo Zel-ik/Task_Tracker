@@ -203,7 +203,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public void updateEpicTask(EpicTask epicTask, int id) {
         super.updateEpicTask(epicTask, id);
-        save();
+        if(!epicTask.getSubtasks().isEmpty()){
+            save();
+        }
     }
 
     @Override
@@ -215,7 +217,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public void createEpicTask(EpicTask task) {
         super.createEpicTask(task);
-        save();
     }
 
     @Override
