@@ -1,40 +1,11 @@
-package Manager;
+package test;
 
-import LinckedList.*;
-import Task.*;
+import manager.InMemoryHistoryManager;
+import task.EpicTask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class InMemoryHistoryManager implements HistoryManager {
-    Map<Integer, Node<Task>> tasksHistory = new HashMap<>();
-    CustomLinkedList<Task> customLinkedList = new CustomLinkedList<>();
-
-
-    @Override
-    public void add(Task task) {
-        Node<Task> node = new Node<>(task);
-        customLinkedList.linkedListAdd(node);
-        tasksHistory.put(task.getId(), node);
-
-    }
-
-    @Override
-    public void remove(int id) {
-        customLinkedList.removeNode(tasksHistory.get(id));
-        tasksHistory.remove(id);
-
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return customLinkedList.getTasks();
-    }
-
-
+public class HistoryManagerTest extends InMemoryHistoryManager {
     @Test
     void emptyHistoryTest(){
         Assertions.assertEquals(0,getHistory().size());
@@ -84,14 +55,4 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
     }
-
-    @Test
-    void getHistoryTest(){
-        EpicTask epicTask = new EpicTask("epic","des");
-        add(epicTask);
-
-        Assertions.assertEquals(1, customLinkedList.getTasks().size());
-
-    }
-
 }

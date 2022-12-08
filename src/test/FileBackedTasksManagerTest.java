@@ -1,6 +1,6 @@
-package Test;
+package test;
 
-import Manager.FileBackedTasksManager;
+import manager.FileBackedTasksManager;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 

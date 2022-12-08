@@ -1,13 +1,14 @@
-package Manager;
+package manager;
 
-import Task.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import task.*;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
-import static Manager.TaskType.*;
+import static manager.TaskType.EPIC_TASK;
+import static manager.TaskType.SUBTASK;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -203,7 +204,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public void updateEpicTask(EpicTask epicTask, int id) {
         super.updateEpicTask(epicTask, id);
-        if(!epicTask.getSubtasks().isEmpty()){
+        if (!epicTask.getSubtasks().isEmpty()) {
             save();
         }
     }
@@ -233,10 +234,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 return o1.getStartTime().compareTo(o2.getStartTime());
             }
         });
-        for (int i = 0; i < allTasks.size()-1; i++){
-            if(allTasks.get(i).getStartTime().plusMinutes(allTasks.get(i).getDuration()).isAfter(allTasks.get(i+1).getStartTime()));{
-                System.out.println("Задача с id " +allTasks.get(i).getId() + " пересекается с задачей с id "
-                + allTasks.get(i+1).getId());
+        for (int i = 0; i < allTasks.size() - 1; i++) {
+            if (allTasks.get(i).getStartTime().plusMinutes(allTasks.get(i).getDuration()).isAfter(allTasks.get(i + 1).getStartTime()))
+                ;
+            {
+                System.out.println("Задача с id " + allTasks.get(i).getId() + " пересекается с задачей с id "
+                        + allTasks.get(i + 1).getId());
             }
         }
         System.out.println(allTasks);
@@ -266,7 +269,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBackedTaskManager.createSubtask(subtask3);
 
         fileBackedTaskManager.getPrioritizedTasks();
-
 
 
     }

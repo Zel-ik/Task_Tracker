@@ -1,4 +1,4 @@
-package LinckedList;
+package linckedList;
 
 public class Node<T> {
     T data;

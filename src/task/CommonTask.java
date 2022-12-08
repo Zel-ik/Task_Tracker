@@ -1,10 +1,9 @@
-package Task;
+package task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
-import static Manager.TaskType.COMMON_TASK;
+import static manager.TaskType.COMMON_TASK;
 
 public class CommonTask extends Task {
     private int id;

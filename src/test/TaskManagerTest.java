@@ -1,12 +1,108 @@
-package Test;
+package test;
 
-import Manager.TaskManager;
-import Task.*;
+import manager.InMemoryTaskManager;
+import manager.TaskManager;
+import task.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public abstract class TaskManagerTest<T extends TaskManager>{
+public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTaskManager {
     protected T manager;
+
+    @Test
+    void statusEmptyTest() {
+        EpicTask epicTask = new EpicTask("Тест", "Тестовый");
+        Assertions.assertFalse(epicTask.getSubtasks().size() > 0);
+    }
+
+    @Test
+    void allOfSubtasksHaveNewStatusTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest2.setStatus(Status.DONE);
+//        statusManager(epicTaskTest);
+//        int correct = 0;
+//        if (epicTaskTest.getStatus() == Status.NEW) {
+//            correct = 1;
+//        }
+//        Assertions.assertEquals(1,correct);
+//        Тут проверка на New epicTaskTest, если вдруг я неправильно понял задание, этот тест тоже работает
+
+        int newStatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.NEW) {
+                newStatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(1, newStatusCounter);
+    }
+
+    @Test
+    void allOfSubtasksHaveDoneStatusTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest, "12-04-2020 15:55", 15);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest, "12-04-2020 15:55", 15);
+        subtaskTest2.setStatus(Status.DONE);
+        subtaskTest.setStatus(Status.DONE);
+        statusManager(epicTaskTest);
+
+        int correct = 0;
+        if (epicTaskTest.getStatus() == Status.DONE) {
+            correct = 1;
+        }
+        Assertions.assertEquals(1, correct);
+
+//        int newStatusCounter = 0;
+//        for(Subtask s : epicTaskTest.getSubtasks()){
+//            if(s.getStatus() != Status.DONE){
+//                newStatusCounter +=1;
+//            }
+//        }
+//
+//        Assertions.assertEquals(0,newStatusCounter);
+    }
+
+    @Test
+    void statusNewAndDoneTogetherTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        Subtask subtaskTest3 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest2.setStatus(Status.DONE);
+        subtaskTest2.setStatus(Status.IN_PROGRESS);
+        statusManager(epicTaskTest);
+
+        int StatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.NEW) {
+                StatusCounter += 1;
+            } else if (s.getStatus() == Status.DONE) {
+                StatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(2, StatusCounter);
+    }
+
+    @Test
+    void statusInProgressTest() {
+        EpicTask epicTaskTest = new EpicTask("Тест", "Тестовый");
+        Subtask subtaskTest = new Subtask("subTest", "SubTestDes", epicTaskTest);
+        Subtask subtaskTest2 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        Subtask subtaskTest3 = new Subtask("subTest2", "SubTestDes2", epicTaskTest);
+        subtaskTest.setStatus(Status.IN_PROGRESS);
+        subtaskTest2.setStatus(Status.IN_PROGRESS);
+        subtaskTest3.setStatus(Status.IN_PROGRESS);
+        statusManager(epicTaskTest);
+
+        int StatusCounter = 0;
+        for (Subtask s : epicTaskTest.getSubtasks()) {
+            if (s.getStatus() == Status.IN_PROGRESS) {
+                StatusCounter += 1;
+            }
+        }
+        Assertions.assertEquals(3, StatusCounter);
+    }
 
     @Test
      void subtaskHasEpicTest() {
@@ -28,7 +124,7 @@ public abstract class TaskManagerTest<T extends TaskManager>{
 
     @Test
     void returnCommonTaskListTest(){
-        CommonTask task = new CommonTask("Task", "Task disc");
+        CommonTask task = new CommonTask("task", "Task disc");
         CommonTask task2 = new CommonTask("Task2", "Task disc2");
         Assertions.assertEquals(0, manager.returnCommonTaskList().size());
 

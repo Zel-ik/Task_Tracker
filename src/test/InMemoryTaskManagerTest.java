@@ -1,6 +1,6 @@
-package Test;
+package test;
 
-import Manager.InMemoryTaskManager;
+import manager.InMemoryTaskManager;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

@@ -1,14 +1,13 @@
-package Task;
+package task;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.Objects;
 
-import static Manager.TaskType.EPIC_TASK;
+import static manager.TaskType.EPIC_TASK;
 
 public class EpicTask extends Task {
 

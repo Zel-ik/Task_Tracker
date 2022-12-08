@@ -1,11 +1,11 @@
-package Task;
+package task;
 
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import static Manager.TaskType.SUBTASK;
+import static manager.TaskType.SUBTASK;
 
 public class Subtask extends Task {
     private EpicTask epicTask;
@@ -42,7 +42,7 @@ public class Subtask extends Task {
         if (epicTask.getSubtasks().get(epicTask.getSubtasks().size() - 1).id == this.id) {
             epicTask.setEndTime(this.endTime);
         }
-        epicTask.setWholeDuration((int)getDuration());
+        epicTask.setWholeDuration((int) getDuration());
     }
 
 
@@ -72,7 +72,7 @@ public class Subtask extends Task {
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = LocalDateTime.parse(startTime,getFormatter());
+        this.startTime = LocalDateTime.parse(startTime, getFormatter());
     }
 
     public int getDuration() {

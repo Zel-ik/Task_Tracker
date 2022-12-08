@@ -1,6 +1,4 @@
-package LinckedList;
-
-import LinckedList.Node;
+package linckedList;
 
 import java.util.ArrayList;
 import java.util.List;
