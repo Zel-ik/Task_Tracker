@@ -105,7 +105,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-     void subtaskHasEpicTest() {
+    void subtaskHasEpicTest() {
         EpicTask epicTask = new EpicTask("epic", "epic disc");
         Subtask subtask = new Subtask("subtask", "subtask disc", epicTask);
 
@@ -123,7 +123,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void returnCommonTaskListTest(){
+    void returnCommonTaskListTest() {
         CommonTask task = new CommonTask("task", "Task disc");
         CommonTask task2 = new CommonTask("Task2", "Task disc2");
         Assertions.assertEquals(0, manager.returnCommonTaskList().size());
@@ -135,10 +135,10 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void returnEpicTaskListTest(){
+    void returnEpicTaskListTest() {
         EpicTask epicTask = new EpicTask("epicT", "epic disc");
         EpicTask epicTask2 = new EpicTask("epicT", "epic disc");
-        Assertions.assertEquals(0,manager.returnEpicTaskList().size());
+        Assertions.assertEquals(0, manager.returnEpicTaskList().size());
 
         manager.createEpicTask(epicTask);
         manager.createEpicTask(epicTask2);
@@ -146,12 +146,12 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void returnSubtaskListTest(){
+    void returnSubtaskListTest() {
         EpicTask epicTask = new EpicTask("epicT", "epic disc");
-        Subtask subtask = new Subtask("subtask", "subtask disc",epicTask, "22-04-2022 15:41", 51);
-        Subtask subtask2 = new Subtask("subtask2", "subtask disc2",epicTask, "22-04-2022 15:41", 51);
+        Subtask subtask = new Subtask("subtask", "subtask disc", epicTask, "22-04-2022 15:41", 51);
+        Subtask subtask2 = new Subtask("subtask2", "subtask disc2", epicTask, "22-04-2022 15:41", 51);
 
-        Assertions.assertEquals(0,manager.returnSubtaskList().size());
+        Assertions.assertEquals(0, manager.returnSubtaskList().size());
 
         manager.createSubtask(subtask);
         manager.createSubtask(subtask2);
@@ -160,35 +160,35 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void removeCommonTaskListTest(){
+    void removeCommonTaskListTest() {
         CommonTask task = new CommonTask("commonTask", "task disc");
         manager.createCommonTask(task);
         manager.removeCommonTaskList();
 
-        Assertions.assertEquals(0,manager.returnCommonTaskList().size());
+        Assertions.assertEquals(0, manager.returnCommonTaskList().size());
     }
 
     @Test
-    void removeEpicTaskListTest(){
+    void removeEpicTaskListTest() {
         EpicTask task = new EpicTask("epic", "epic disc");
         manager.createEpicTask(task);
         manager.removeEpicTaskList();
 
-        Assertions.assertEquals(0,manager.returnEpicTaskList().size());
+        Assertions.assertEquals(0, manager.returnEpicTaskList().size());
     }
 
     @Test
-    void removeSubtaskListTest(){
+    void removeSubtaskListTest() {
         EpicTask epicTask = new EpicTask("e", "e");
         Subtask subtask = new Subtask("sub", "sub man", epicTask, "21-04-2022 15:55", 14);
         manager.createSubtask(subtask);
         manager.removeSubtaskList();
 
-        Assertions.assertEquals(0,manager.returnSubtaskList().size());
+        Assertions.assertEquals(0, manager.returnSubtaskList().size());
     }
 
     @Test
-    void findEpicTaskIdTest(){
+    void findEpicTaskIdTest() {
         EpicTask epicTask = new EpicTask("e", "e");
         manager.createEpicTask(epicTask);
 
@@ -197,7 +197,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void findCommonTaskIdTest(){
+    void findCommonTaskIdTest() {
         CommonTask task = new CommonTask("e", "e");
         manager.createCommonTask(task);
 
@@ -206,7 +206,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void findSubtaskIdTest(){
+    void findSubtaskIdTest() {
         EpicTask epicTask = new EpicTask("e", "e");
         Subtask subtask = new Subtask("s", "s", epicTask, "20-12-2022 15:55", 531);
         manager.createSubtask(subtask);
@@ -216,7 +216,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void createEpicTaskTest(){
+    void createEpicTaskTest() {
         EpicTask epicTask = new EpicTask("name", "des");
         manager.createEpicTask(epicTask);
 
@@ -224,7 +224,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void createSubtaskTest(){
+    void createSubtaskTest() {
         EpicTask epicTask = new EpicTask("t", "e");
         Subtask subtask = new Subtask("name", "des", epicTask, "22-04-2022 15:55", 16);
         manager.createSubtask(subtask);
@@ -233,7 +233,7 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void createCommonTaskTest(){
+    void createCommonTaskTest() {
         CommonTask commonTask = new CommonTask("name", "des");
         manager.createCommonTask(commonTask);
 
@@ -241,42 +241,42 @@ public abstract class TaskManagerTest<T extends TaskManager> extends InMemoryTas
     }
 
     @Test
-    void updateEpicTaskTest(){
+    void updateEpicTaskTest() {
         EpicTask epicTask = new EpicTask("name", "des");
         EpicTask anotherEpic = new EpicTask("another name", "another dis");
 
         manager.createEpicTask(epicTask);
-        manager.updateEpicTask(anotherEpic,0);
+        manager.updateEpicTask(anotherEpic, 0);
 
         Assertions.assertEquals(anotherEpic, manager.findEpic(0));
     }
 
     @Test
-    void updateSubtaskTest(){
+    void updateSubtaskTest() {
         EpicTask epicTask = new EpicTask("name", "des");
         Subtask subtask = new Subtask("name", "des", epicTask, "22-04-2022 15:16", 16);
-        Subtask subtask2 = new Subtask("noName", "noDes",epicTask, "22-04-2022 15:32", 40);
+        Subtask subtask2 = new Subtask("noName", "noDes", epicTask, "22-04-2022 15:32", 40);
 
         manager.createSubtask(subtask);
-        manager.updateSubtask(subtask2,0);
+        manager.updateSubtask(subtask2, 0);
 
         Assertions.assertEquals(subtask2, manager.findSubtask(0));
     }
 
     @Test
-    void updateCommonTaskTest(){
+    void updateCommonTaskTest() {
         CommonTask commonTask = new CommonTask("hero", "helping someone");
         CommonTask commonTask1 = new CommonTask("villain", "tricking someone");
 
         manager.createCommonTask(commonTask);
         manager.updateCommonTask(commonTask1, 0);
 
-        Assertions.assertEquals(commonTask1,manager.findCommonTask(0));
+        Assertions.assertEquals(commonTask1, manager.findCommonTask(0));
 
     }
 
     @Test
-    void deleteTaskForIdTest(){
+    void deleteTaskForIdTest() {
         EpicTask epicTask = new EpicTask("do you delete me?", "no, please, i have the wife and children");
         manager.createEpicTask(epicTask);
         manager.deleteTaskForId(0);

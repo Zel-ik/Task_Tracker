@@ -1,10 +1,19 @@
+import com.sun.net.httpserver.HttpServer;
 import manager.Managers;
 import manager.TaskManager;
+import net.HistoryHandler;
+import net.RootHandler;
+import net.impl.EpicRequestHandler;
+import net.impl.SubtaskRequestHandler;
+import net.impl.TaskRequestHandler;
 import task.*;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class Main {
-    public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+    private static TaskManager<?> getTaskManager() {
+        TaskManager<?> taskManager = Managers.getDefault();
 
         EpicTask move = new EpicTask("Переезд", "найтии квартиру, собрать вещи и переехать");
         EpicTask problems = new EpicTask("Решаем проблемы", "Найти тупые ошибки в моем тупом коде");
@@ -20,18 +29,27 @@ public class Main {
         taskManager.createSubtask(subtask2);
         taskManager.createSubtask(subtask3);
 
-
-
         taskManager.findEpic(1);
         taskManager.findEpic(0);
         taskManager.findSubtask(3);
         taskManager.deleteTaskForId(0);
 
+        return taskManager;
+    }
 
-        System.out.println(taskManager.returnEpicTaskList());
-        System.out.println(taskManager.returnSubtaskList());
-        System.out.println(taskManager.getHistory());
+    public static void main(String[] args) throws IOException {
+        TaskManager<?> taskManager = getTaskManager();
 
+        HttpServer httpServer = HttpServer.create();
+
+        httpServer.bind(new InetSocketAddress(8090), 0);
+        httpServer.createContext("/tasks", new RootHandler(taskManager));
+        httpServer.createContext("/tasks/history", new HistoryHandler(taskManager));
+        httpServer.createContext("/tasks/task", new TaskRequestHandler(taskManager));
+        httpServer.createContext("/tasks/subtask", new SubtaskRequestHandler(taskManager));
+        httpServer.createContext("/tasks/epic", new EpicRequestHandler(taskManager));
+
+        httpServer.start();
     }
 
 }

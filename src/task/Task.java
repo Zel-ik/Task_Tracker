@@ -11,13 +11,13 @@ public abstract class Task {
 
 
 
-    private String name;
-    private String describe;
-    private int id;
-    private Status status;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private int duration;
+    protected String name;
+    protected String describe;
+    protected int id;
+    protected Status status;
+    protected transient LocalDateTime startTime;
+    protected transient LocalDateTime endTime;
+    protected int duration;
 
     public Task(String name, String describe) {
         this.name = name;

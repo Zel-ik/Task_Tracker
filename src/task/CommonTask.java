@@ -6,12 +6,12 @@ import java.time.format.DateTimeFormatter;
 import static manager.TaskType.COMMON_TASK;
 
 public class CommonTask extends Task {
-    private int id;
-    private Status status;
+    public int id;
+    public Status status;
 
-    private LocalDateTime startTime;
-    private int duration;
-    private LocalDateTime endTime;
+    public LocalDateTime startTime;
+    public int duration;
+    public LocalDateTime endTime;
 
 
     public CommonTask(String name, String describe, String startTime, int duration) {

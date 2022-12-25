@@ -9,11 +9,9 @@ import static manager.TaskType.SUBTASK;
 
 public class Subtask extends Task {
     private EpicTask epicTask;
-    private int id;
 
-    private LocalDateTime startTime;
-    private int duration;
-    private LocalDateTime endTime;
+    public transient LocalDateTime startTime;
+    public transient LocalDateTime endTime;
 
     public DateTimeFormatter getFormatter() {
         return Formatter;
@@ -56,7 +54,7 @@ public class Subtask extends Task {
     }
 
 
-    private final DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"); // определил входной формат
+    private transient final DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"); // определил входной формат
 
     public LocalDateTime getStartTime() {
         return startTime;

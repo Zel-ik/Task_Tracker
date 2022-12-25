@@ -11,15 +11,11 @@ import static manager.TaskType.EPIC_TASK;
 
 public class EpicTask extends Task {
 
-    private int id;
     private ArrayList<Subtask> subtasks = new ArrayList<>();
 
-    private final DateTimeFormatter formatterForStart = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private int duration;
-
-
+    private transient final DateTimeFormatter formatterForStart = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    private transient LocalDateTime startTime;
+    private transient LocalDateTime endTime;
 
     public EpicTask(String name, String describe) {
         super(name, describe);
@@ -27,7 +23,6 @@ public class EpicTask extends Task {
         if(!subtasks.isEmpty()){
             this.startTime = subtasks.get(0).getStartTime();
         }
-
     }
 
     public void setDuration(int duration) {
@@ -36,7 +31,6 @@ public class EpicTask extends Task {
 
     public void setWholeDuration(int duration){
         this.duration += duration;
-
     }
 
 
@@ -63,7 +57,6 @@ public class EpicTask extends Task {
     public LocalDateTime getStartTime() {
         return startTime;
     }
-
 
     public void setSubtasks(Subtask subtasks) {
         this.getSubtasks().add(subtasks);
